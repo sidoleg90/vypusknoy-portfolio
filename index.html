@@ -188,6 +188,12 @@ img{max-width:100%;display:block}
 .status-pill{align-self:flex-start}
 .flag-repo{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;color:var(--muted);word-break:break-all}
 .flag-repo svg{width:14px;height:14px;flex:none;opacity:.55}
+.flag-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.gal-item{display:flex;flex-direction:column;gap:5px;border-radius:10px;overflow:hidden}
+.gal-item img{width:100%;aspect-ratio:1/1;object-fit:cover;object-position:top center;border-radius:10px;border:1px solid var(--border);background:#fff;transition:transform .2s,box-shadow .2s}
+.gal-item:hover img{transform:translateY(-2px);box-shadow:var(--sh-2)}
+.gal-item span{font-family:var(--mono);font-size:9.5px;line-height:1.3;color:var(--muted)}
+.gal-item.missing{display:none}
 
 /* ============================================================ CATALOG */
 .cat-group{margin-top:44px}

@@ -2,8 +2,10 @@
   "name": "vypusknoy-portfolio",
   "version": "1.0.0",
   "private": true,
+  "description": "Выпускной сайт-портфолио Олега — проекты, сделанные с AI-агентом за 7,5 недель",
   "scripts": {
-    "build-data": "node -e \"const d=require(./data/projects.json);require(fs).writeFileSync(data/projects.js,/* СГЕНЕРИРОВАНО из projects.json — не редактируй вручную */\\nwindow.PORTFOLIO = +JSON.stringify(d,null,2)+;\\n)\"",
+    "build-data": "node tools/build-data.js",
+    "qr": "python3 tools/gen_qr.py",
     "serve": "python3 -m http.server 8123"
   }
 }

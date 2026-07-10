@@ -55,10 +55,16 @@
       return '<a class="btn ' + (l.primary ? "btn-grad" : "btn-ghost") + '" href="' + esc(l.url) + '" target="_blank" rel="noopener">' + esc(l.label) + ' ' + ICON_EXT + '</a>';
     }).join("");
 
-    // сторона: скриншот + QR primary-ссылки
+    // сторона: скриншот + галерея + QR primary-ссылки
     var shot = f.screenshot
-      ? '<div class="flag-shot"><img src="' + esc(f.screenshot) + '" alt="Превью: ' + esc(f.title) + '" loading="lazy"></div>'
+      ? '<div class="flag-shot"><img src="' + esc(f.screenshot) + '" data-title="' + esc(f.title) + '" alt="Превью: ' + esc(f.title) + '" loading="lazy"></div>'
       : '<div class="flag-shot placeholder"><div class="ph">' + esc(f.title) + '<br>' + miniBadgePlain(f.status) + '</div></div>';
+
+    var gal = (f.gallery && f.gallery.length)
+      ? '<div class="flag-gallery">' + f.gallery.map(function (g) {
+          return '<a class="gal-item" href="' + esc(g.src) + '" target="_blank" rel="noopener"><img src="' + esc(g.src) + '" alt="' + esc(g.cap || "") + '" loading="lazy"><span>' + esc(g.cap || "") + '</span></a>';
+        }).join("") + '</div>'
+      : '';
 
     var qrLinks = (f.links || []).filter(function (l) { return l.qr; });
     var qrs = qrLinks.map(function (l) {
@@ -79,6 +85,7 @@
       '</div>' +
       '<div class="flag-side">' +
         shot +
+        gal +
         qrs +
         (f.repo ? '<div class="flag-repo">' + ICON_GH + '<span>' + esc(f.repo) + '</span></div>' : '') +
       '</div>' +
@@ -140,6 +147,16 @@
     '<p>' + esc(m.course || "") + '</p>' +
     '<div class="mono">' + esc(m.period || "") + ' · сделано вместе с AI-агентом · ' + esc(m.date || "") + '</div>' +
   '</div>';
+
+  /* ---------- FALLBACK ДЛЯ ОТСУТСТВУЮЩИХ КАРТИНОК ---------- */
+  document.querySelectorAll("img").forEach(function (img) {
+    img.addEventListener("error", function () {
+      var box = img.closest(".flag-shot");
+      if (box) { box.classList.add("placeholder"); box.innerHTML = '<div class="ph">' + esc(img.getAttribute("data-title") || "скриншот скоро") + '</div>'; return; }
+      var gi = img.closest(".gal-item");
+      if (gi) { gi.classList.add("missing"); }
+    });
+  });
 
   /* ---------- REVEAL + COUNT-UP ---------- */
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
