@@ -27,6 +27,8 @@ for f in DATA.get("flagships", []):
             urls.add(l["url"])
 for d in DATA.get("live_demos", []):
     urls.add(d["url"])
+for c in (DATA.get("contact") or {}).get("channels", []):
+    urls.add(c["url"])
 
 count = 0
 for url in sorted(urls):

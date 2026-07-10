@@ -205,5 +205,18 @@
     { "label": "Калькулятор mr.Vors", "url": "https://sidoleg90.github.io/kovry-calculator/", "note": "живой инструмент" },
     { "label": "Разбор mr.Vors", "url": "https://sidoleg90.github.io/kovry-plan/", "note": "план автоматизации" },
     { "label": "shuraflo.ru", "url": "https://shuraflo.ru", "note": "магазин + оплата" }
-  ]
+  ],
+  "contact": {
+    "eyebrow": "Экспресс-аудит · 20–30 минут",
+    "title": "Освобождаю бизнес от рутины с помощью AI",
+    "subtitle": "Анализирую процессы, создаю AI-ассистентов и автоматизирую задачи, которые ежедневно отнимают время у вашей команды.",
+    "body": "Напишите мне в Telegram или MAX — проведём короткий экспресс-разбор вашего бизнеса. Я покажу, какие процессы можно автоматизировать и с чего лучше начать внедрение AI.",
+    "result": "За 20–30 минут определим, какие процессы в вашем бизнесе действительно стоит автоматизировать, а где AI не нужен.",
+    "image": "assets/portrait-ai-developer-v3.png",
+    "image_alt": "Олег Сидоров — эксперт по AI-автоматизации бизнеса, на фоне неоновой нейросети",
+    "channels": [
+      { "id": "telegram", "label": "Telegram", "url": "https://t.me/oleg_sidorov90", "button": "Получить экспресс-аудит", "primary": true },
+      { "id": "max", "label": "MAX", "url": "https://max.ru/u/f9LHodD0cOLR6WP-iG9Z35BM2gqKbqPupXUPc2p8OwEu3RD19gKU8acqAeY", "button": "Написать в MAX", "primary": false }
+    ]
+  }
 }

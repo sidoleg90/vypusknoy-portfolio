@@ -42,6 +42,9 @@ npm run serve                # → http://localhost:8123
 - `catalog[]` — группы каталога: `{category, items[{id,title,status,summary,stack[],repo,url?,screenshot?}]}`.
 - `how_it_works` — тёмный блок «за кадром»: `{title, intro, points[{k,v}]}`.
 - `live_demos[]` — секция QR: `{label, url, note}`.
+- `contact` — финальный CTA-блок с портретом: `{eyebrow, title, subtitle, body, result, image,
+  image_alt, channels[{id, label, url, button, primary}]}`. QR для `channels` генерит `gen_qr.py`.
+  На десктопе панель QR оверлеем поверх фото, на ≤900px — стеком под кнопками (grid-areas).
 
 Статусы (`status`) управляют цветом точки/бейджа: prod=зелёный, done=серый, wip=янтарный, research=фиолетовый.
 

@@ -139,6 +139,28 @@
     '</div>';
   }).join("");
 
+  /* ---------- CONTACT / CTA ---------- */
+  var C = D.contact;
+  if (C) {
+    var cActs = (C.channels || []).map(function (ch) {
+      return '<a class="btn ' + (ch.primary ? "btn-grad" : "btn-ghost") + '" href="' + esc(ch.url) + '" target="_blank" rel="noopener">' + esc(ch.button) + " " + ICON_EXT + '</a>';
+    }).join("");
+    var cQr = (C.channels || []).map(function (ch) {
+      return '<a class="qcard" href="' + esc(ch.url) + '" target="_blank" rel="noopener"><img src="' + esc(qrSrc(ch.url)) + '" alt="QR: ' + esc(ch.label) + '"><div class="qt"><b>' + esc(ch.label) + '</b><span>отсканируй</span></div></a>';
+    }).join("");
+    $("contact-box").innerHTML =
+      '<div class="contact-inner">' +
+        '<span class="c-eyebrow">' + esc(C.eyebrow) + '</span>' +
+        '<h2 class="c-title">' + esc(C.title) + '</h2>' +
+        '<p class="c-sub">' + esc(C.subtitle) + '</p>' +
+        '<p class="c-body">' + esc(C.body) + '</p>' +
+        (C.result ? '<div class="c-result">' + esc(C.result) + '</div>' : '') +
+        '<div class="c-actions">' + cActs + '</div>' +
+        '<div class="c-visual"><img class="portrait" src="' + esc(C.image) + '" alt="' + esc(C.image_alt || C.title) + '" loading="lazy"></div>' +
+        '<div class="c-qr">' + cQr + '</div>' +
+      '</div>';
+  }
+
   /* ---------- FOOTER ---------- */
   var m = D.meta || {};
   $("footer").innerHTML = '<div class="wrap">' +
