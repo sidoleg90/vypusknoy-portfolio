@@ -1,0 +1,203 @@
+{
+  "meta": {
+    "owner": "Олег",
+    "role": "Руководитель развития ключевых клиентов, ООО «Линдэйли»",
+    "course": "Архитектор нейросотрудников (Дмитрий Ледовских)",
+    "date": "10 июля 2026",
+    "period": "21 мая — 10 июля 2026",
+    "weeks": "7,5 недель",
+    "note": "Единый источник правды. Правь ЗДЕСЬ — index.html рендерит секции из этого файла. Цифры реальные."
+  },
+  "stats_hero": [
+    { "value": "~25", "label": "проектов" },
+    { "value": "20", "label": "репозиториев на GitHub" },
+    { "value": "4", "label": "живых веб-продукта" },
+    { "value": "2", "label": "продакшн-бота" },
+    { "value": "2", "label": "платящих клиента" },
+    { "value": "24/7", "label": "агент на VPS" }
+  ],
+  "stats_numbers": [
+    { "value": 113.8, "prefix": "", "suffix": " млн ₽", "decimals": 1, "label": "портфель ключевых клиентов Линдэйли, T1 2026", "sub": "+7,8% г/г · +1,2% к прогнозу" },
+    { "value": 350, "prefix": "~", "suffix": " КБ", "decimals": 0, "label": "кода в флагмане ii-agent-lindaily", "sub": "Python 307 КБ + Shell 43 КБ + Docker" },
+    { "value": 54, "prefix": "~", "suffix": "", "decimals": 0, "label": "лидов собрал бот «Парсер ЛПР»", "sub": "13 директоров найдено, скоринг 0–100" },
+    { "value": 2, "prefix": "", "suffix": "", "decimals": 0, "label": "платежа ЮKassa прошли на ШураФло", "sub": "деньги дошли на расчётный счёт" },
+    { "value": 51, "prefix": "", "suffix": "", "decimals": 0, "label": "B2B-партнёров Казани в рейтинге", "sub": "для цветочного бизнеса ШураФло" },
+    { "value": 20, "prefix": "", "suffix": "", "decimals": 0, "label": "сегментов ЦА в аудите", "sub": "как продавать AI-агентов" }
+  ],
+  "statuses": {
+    "prod":     { "label": "В проде",     "dot": "🟢" },
+    "done":     { "label": "Завершён",    "dot": "✅" },
+    "wip":      { "label": "В работе",     "dot": "🟡" },
+    "research": { "label": "Исследование", "dot": "🔬" }
+  },
+  "flagships": [
+    {
+      "id": "ii-agent-lindaily",
+      "title": "Линдэйли AI Assistant",
+      "tagline": "Боевой пилот — закрытый Telegram-помощник для отдела продаж",
+      "status": "prod",
+      "client": "ООО «Линдэйли» (работа)",
+      "problem": "Торговые и аккаунт-менеджеры тонут в договорах, возражениях и претензиях. Нужен помощник, который знает утверждённую базу и не сливает персональные данные наружу.",
+      "did": "Собрал закрытого Telegram-ассистента: разбирает договоры, ищет по базе знаний, помогает с возражениями и претензиями, формирует структурированный черновик ответа. Человек всегда принимает решение — бот не пишет клиентам сам.",
+      "engineering": [
+        "RAG: максимум 6 Markdown-фрагментов и ≤5000 токенов на запрос — бинарник не уходит в LLM",
+        "MCP MarkItDown (STDIO, без сети) — локальная конвертация рабочих документов",
+        "Docker-инфра: compose main-pilot / restore-test, PostgreSQL, MinIO, Codex-gateway, Squid egress-proxy",
+        "Бэкапы: systemd service+timer + macOS launchd (pull)",
+        "Spec-driven разработка: планы и спеки (Superpowers) перед кодом",
+        "Ветки main + codex/lindaily-v1 — раздельные тест и прод",
+        "Контур приватности 152-ФЗ: локальное обезличивание ПДн на macOS (Tesseract OCR rus+eng, постраничная ручная проверка)"
+      ],
+      "stack": ["Python 307 КБ", "Shell 43 КБ", "Docker", "PostgreSQL", "MinIO", "MCP", "Squid", "systemd", "Codex"],
+      "result": "Работает как боевой пилот. Самый инженерно сложный проект: RAG + MCP + Docker-инфра + приватный контур обработки договоров.",
+      "links": [
+        { "label": "Живой обзор: lindaily-guide", "url": "https://sidoleg90.github.io/lindaily-guide/", "primary": true, "qr": true }
+      ],
+      "repo": "sidoleg90/ii-agent-lindaily (приватный)",
+      "screenshot": "assets/shot-lindaily-guide.png"
+    },
+    {
+      "id": "lpr-parser-samara",
+      "title": "Парсер ЛПР · Самара",
+      "tagline": "@parsing_lpr_bot — продакшн-бот сбора B2B-лидов по Поволжью",
+      "status": "prod",
+      "client": "Виталий, Самара (клиент)",
+      "problem": "Бизнесу по мойке окон и фасадов нужна база лидов с выходом на лиц, принимающих решения, а не просто список компаний.",
+      "did": "Telegram-бот собирает компании из 2ГИС и Яндекс.Карт, обогащает до ФИО директора и контактов, считает скоринг 0–100 и отдаёт готовый Excel в 2 листа: «Кому звонить» и «Все данные». Мультидоступ по Telegram-ID — владелец раздаёт /grant и /revoke.",
+      "engineering": [
+        "Скрапинг 2ГИС + Яндекс.Карты через Playwright (фикс версии Chromium под 2ГИС)",
+        "Обогащение DaData: ИНН + директор, нормализация КАПС",
+        "Скоринг лидов 0–100, экспорт Excel в 2 листа",
+        "Мультидоступ по Telegram-ID: /grant, /revoke, /users, /myid",
+        "Изолированный деплой: отдельный юзер lprbot, systemd MemoryMax=1.2G, ProtectHome — не мешает основному агенту, удаляется одной командой",
+        "Встроенный AI-ассистент через OpenRouter (обход гео-блока по RU-IP)"
+      ],
+      "stack": ["Python", "aiogram 3", "SQLite", "Playwright", "DaData", "systemd", "OpenRouter"],
+      "result": "Задеплоен и работает на VPS. ~54 лида по Казани в базе, 13 директоров найдено с сайтов.",
+      "links": [
+        { "label": "Telegram: @parsing_lpr_bot", "url": "https://t.me/parsing_lpr_bot", "primary": true, "qr": true }
+      ],
+      "repo": "sidoleg90/lpr-parser-samara (приватный)",
+      "screenshot": ""
+    },
+    {
+      "id": "mr-vors",
+      "title": "mr.Vors · ковры, Тольятти",
+      "tagline": "Живые веб-инструменты для чистки ковров + план автоматизации",
+      "status": "prod",
+      "client": "Женя, Тольятти (клиент)",
+      "problem": "70–100 звонков в день с ТВ-рекламы, но клиент не может узнать цену без звонка. Нужен инструмент прозрачной цены и план автоматизации.",
+      "did": "Разобрал бизнес и конкурентов, собрал публичный калькулятор цены (3 вопроса → честная цена сразу) и страницу-разбор с планом из 3 шагов: калькулятор → голосовой AI на звонки → цифровые статусы заказов.",
+      "engineering": [
+        "Публичный калькулятор на GitHub Pages: тип ковра × площадь × допы → цена 390–1100 ₽/м²",
+        "Страница-разбор бизнеса с дорожной картой автоматизации",
+        "Research: голосовой AI (open-source и amoCRM-решения), CRM-агент — отдельные репозитории",
+        "Дисциплина: каждый артефакт в своём git-репо"
+      ],
+      "stack": ["HTML/CSS", "JavaScript", "GitHub Pages", "amoCRM (research)"],
+      "result": "Два живых публичных инструмента — можно показать вживую прямо на защите. Калькулятор и страница разбора работают.",
+      "links": [
+        { "label": "Живой калькулятор", "url": "https://sidoleg90.github.io/kovry-calculator/", "primary": true, "qr": true },
+        { "label": "Разбор бизнеса", "url": "https://sidoleg90.github.io/kovry-plan/", "primary": false, "qr": true }
+      ],
+      "repo": "sidoleg90/kovry-calculator · kovry-plan (публичные)",
+      "screenshot": "assets/shot-kovry-calculator.png"
+    },
+    {
+      "id": "shura-flo",
+      "title": "ШураФло · Казань",
+      "tagline": "shuraflo.ru — запущенный магазин цветов + онлайн-оплата + B2B",
+      "status": "prod",
+      "client": "Цветочный бизнес супруги",
+      "problem": "Семейному цветочному магазину нужен онлайн-приём заказов с оплатой и системная B2B-стратегия для роста среднего чека.",
+      "did": "Лендинг на Tilda с подключённой онлайн-оплатой ЮKassa (тест прошёл — деньги дошли на счёт). Плюс B2B-движок: скрипты продаж, рейтинг партнёров Казани, 25 AI-кейсов, баннеры с фирменными QR и живой выезд по холодным контактам.",
+      "engineering": [
+        "Tilda + интеграция ЮKassa: ShopID/Secret Key, товарные варианты",
+        "2 тестовых платежа прошли — деньги на расчётном счёте",
+        "B2B-скрипты продаж (77 КБ), рейтинг 51 партнёра Казани, 25 AI-кейсов",
+        "Баннеры мероприятия (7+ вариантов → финал) + мультиканальные QR (сайт/Telegram/MAX)",
+        "Полевой день холодных визитов: 8 потенциальных партнёров с дедлайнами"
+      ],
+      "stack": ["Tilda", "ЮKassa", "research", "HTML-баннеры"],
+      "result": "Магазин запущен и принимает оплату онлайн. Стартовала B2B-программа продаж.",
+      "links": [
+        { "label": "Магазин: shuraflo.ru", "url": "https://shuraflo.ru", "primary": true, "qr": true }
+      ],
+      "repo": "sidoleg90/shura-flo (публичный, стратегия)",
+      "screenshot": "assets/shot-shuraflo.png"
+    }
+  ],
+  "catalog": [
+    {
+      "category": "Продакшн-системы и инженерия",
+      "items": [
+        { "id": "kam-portfolio-agent", "title": "KAM Portfolio Agent", "status": "done", "summary": "AI-агент управления портфелем ключевых клиентов: импорт счетов из 1С → Excel с живыми формулами и анализом план/факт по терциям.", "stack": ["Python", "openpyxl", "1С-выгрузки"], "repo": "sidoleg90/kam-portfolio-agent" },
+        { "id": "lindaily-guide", "title": "Lindaily Guide", "status": "prod", "summary": "Публичный интерактивный гайд-обзор помощника отдела продаж Линдэйли. Живой на GitHub Pages.", "stack": ["HTML/CSS", "GitHub Pages"], "repo": "sidoleg90/lindaily-guide", "url": "https://sidoleg90.github.io/lindaily-guide/" },
+        { "id": "portfolio-lindeli", "title": "Portfolio Lindeli", "status": "done", "summary": "Операционный портфель ключевых клиентов Линдэйли — данные и отчётность по КАМ.", "stack": ["Excel", "data"], "repo": "sidoleg90/portfolio-lindeli" }
+      ]
+    },
+    {
+      "category": "Система агентов (мета)",
+      "items": [
+        { "id": "hermes-agent", "title": "Hermes — личный агент", "status": "prod", "summary": "Ops-репозитории мульти-агентной системы Hermes на VDS: runbooks, архитектура, снимки состояния, healthcheck, roadmap специализированных агентов.", "stack": ["VDS", "systemd", "runbooks"], "repo": "sidoleg90/my-hermes-agent · hermes-personal-agent" },
+        { "id": "ai-agent-army-guide", "title": "Как создать армию AI-агентов", "status": "done", "summary": "Практический гайд: задачи → роли → инструкции → память → инструменты → проверка → автоматизация. Прямо в тему курса.", "stack": ["методичка"], "repo": "sidoleg90/ai-agent-army-guide" },
+        { "id": "codex-agent", "title": "Codex-agent", "status": "prod", "summary": "Второй параллельный агент (движок Codex) на том же VPS — своя личность, память, автономность; «знает о брате» — Claude Code агенте.", "stack": ["Codex", "SOUL/MEMORY/USER"], "repo": "локальный" },
+        { "id": "agent-self", "title": "Само-презентации агента", "status": "done", "summary": "Лендинг, презентация и профиль агента-нейросотрудника для коллег Линдэйли (agent-landing / agent-presentation / agent-profile).", "stack": ["HTML/CSS"], "repo": "локальные" }
+      ]
+    },
+    {
+      "category": "Работа в Линдэйли (B2B)",
+      "items": [
+        { "id": "kp-carpets", "title": "КП «Ковры»", "status": "done", "summary": "Коммерческое предложение по аренде ковров, сгенерировано скриптом: фирменная палитра, 9 МБ PowerPoint + HTML-версия.", "stack": ["Python", "python-pptx"], "repo": "локальный" },
+        { "id": "rech-t1", "title": "Речь T1 2026", "status": "done", "summary": "Речь на отчётном собрании (~8–9 мин): портфель 113,8 млн ₽, +7,8% г/г, разбивка по каждому менеджеру, расторжения, дебиторка.", "stack": ["аналитика", "спичрайтинг"], "repo": "локальный" },
+        { "id": "zashchitnye", "title": "Бриф «Защитные покрытия»", "status": "done", "summary": "Переговорный бриф по удержанию клиента: условия договора, расчёты компенсаций, рычаг выкупа 1 014 897 ₽. Опубликован как HTML.", "stack": ["аналитика", "HTML"], "repo": "локальный" },
+        { "id": "lindaily-clients", "title": "Факторинг + претензия", "status": "done", "summary": "Таблица клиентов факторинга (openpyxl) и формальная досудебная претензия Станкомашстрою по просроченному долгу.", "stack": ["Python", "openpyxl", "Word"], "repo": "локальный" }
+      ]
+    },
+    {
+      "category": "Маркетинг и контент",
+      "items": [
+        { "id": "shura-banner", "title": "Баннеры ШураФло", "status": "done", "summary": "Итеративный дизайн баннера мероприятия: 7+ вариантов → финал с подписью + фирменные QR для сайта/Telegram/MAX.", "stack": ["HTML→image", "дизайн"], "repo": "локальный", "screenshot": "assets/banner-final.jpg" },
+        { "id": "shura-research", "title": "B2B-исследование цветов", "status": "done", "summary": "Скрипты продаж (77 КБ), рейтинг 51 партнёра Казани, 25 AI-кейсов, эмоциональные B2B-подходы, рабочая тетрадь Excel.", "stack": ["research", "Excel"], "repo": "sidoleg90/shura-flo" },
+        { "id": "celevaia-audit", "title": "Аудит ЦА", "status": "research", "summary": "Как продавать AI-агентов: 20 сегментов, персоны, офферы, планы 3-дневной валидации спроса. Product-market fit на кейсах ковров/окон.", "stack": ["GTM", "research"], "repo": "sidoleg90/celevaia-audit" }
+      ]
+    },
+    {
+      "category": "Корпоративы и события",
+      "items": [
+        { "id": "samara-corporate", "title": "Корпоратив Самара 2026", "status": "done", "summary": "План корпоративного выезда на 11 человек: сценарии, активности, тайминг. Публичный.", "stack": ["планирование", "HTML"], "repo": "sidoleg90/samara-corporate-2026" },
+        { "id": "ulyanovsk-trip", "title": "Ульяновск — план на 2 июля", "status": "done", "summary": "Программа корпоративной поездки в Ульяновск. Публичная страница-план.", "stack": ["планирование", "HTML"], "repo": "sidoleg90/ulyanovsk-trip" },
+        { "id": "tdk2027", "title": "Поездка TDK2027", "status": "done", "summary": "Планирование мужской поездки: 11 человек, 3 дня, бюджет 500 тыс ₽. Сравнение направлений с рекомендацией.", "stack": ["планирование"], "repo": "sidoleg90/TDK2027" }
+      ]
+    },
+    {
+      "category": "Личное и инфраструктура",
+      "items": [
+        { "id": "remont", "title": "Ремонт квартиры", "status": "research", "summary": "Исследование по ремонту квартиры в Казани: оценка по комнатам, бюджет 130–180 тыс ₽ с материалами, рейтинг подрядчиков.", "stack": ["research"], "repo": "локальный" },
+        { "id": "okna", "title": "Окна", "status": "research", "summary": "Подбор компаний на замену окон/балкона (нестандартные проёмы дома 1955 г.), верифицированный шорт-лист.", "stack": ["research"], "repo": "локальный" },
+        { "id": "moi-tseli", "title": "Цели 2026–2027", "status": "done", "summary": "Сессия целеполагания по 7-шаговому фреймворку: главная цель — 6 платящих AI-клиентов/мес к середине 2027.", "stack": ["коучинг"], "repo": "sidoleg90/moi-tseli-2026" },
+        { "id": "finance-bot", "title": "finance-bot", "status": "done", "summary": "Личный Telegram-трекер расходов/доходов (категории, статистика, экспорт). Стал шаблоном-форком для бота «Парсер ЛПР».", "stack": ["Python", "aiogram 3", "SQLite"], "repo": "локальный" },
+        { "id": "vpn-setup", "title": "VPN-план", "status": "research", "summary": "План развёртывания VPN (VLESS + Reality через 3X-UI) — обоснование протокола против DPI, сравнение провайдеров.", "stack": ["research", "3X-UI"], "repo": "локальный" },
+        { "id": "virtual-cards", "title": "Виртуальные карты", "status": "research", "summary": "Сравнение провайдеров виртуальных карт для оплаты AI-подписок: комиссии и рекомендация.", "stack": ["research"], "repo": "локальный" }
+      ]
+    }
+  ],
+  "how_it_works": {
+    "title": "За кадром: как устроен агент",
+    "intro": "Проекты сверху сделаны не в чате, а персональным AI-агентом (Hermes) — он живёт на VPS 24/7 и работает по правилам.",
+    "points": [
+      { "k": "Память в 3 уровня", "v": "MEMORY.md (факты навсегда) · memory/ (дневник по дням) · knowledge/ (справочники). Агент помнит контекст между сессиями." },
+      { "k": "Скиллы", "v": "Специализированные режимы: дизайн, презентации, контент, разработка, исследование конкурентов — включаются под задачу." },
+      { "k": "Светофор автономности", "v": "🟢 делает сам · 🟡 делает и показывает · 🔴 стоп, спрашивает. Необратимое и платное — только с подтверждением." },
+      { "k": "Деплой 24/7", "v": "VPS + Telegram-бот: можно поставить задачу голосом или текстом из телефона в любой момент." },
+      { "k": "Spec-driven цикл", "v": "На сложных проектах: план → спека → код → проверка. Так собран флагман ii-agent-lindaily." }
+    ]
+  },
+  "live_demos": [
+    { "label": "Lindaily Guide", "url": "https://sidoleg90.github.io/lindaily-guide/", "note": "обзор флагмана" },
+    { "label": "@parsing_lpr_bot", "url": "https://t.me/parsing_lpr_bot", "note": "продакшн-бот" },
+    { "label": "Калькулятор mr.Vors", "url": "https://sidoleg90.github.io/kovry-calculator/", "note": "живой инструмент" },
+    { "label": "Разбор mr.Vors", "url": "https://sidoleg90.github.io/kovry-plan/", "note": "план автоматизации" },
+    { "label": "shuraflo.ru", "url": "https://shuraflo.ru", "note": "магазин + оплата" }
+  ]
+}
