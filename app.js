@@ -78,10 +78,9 @@
         '<div class="actions">' + actions + '</div>' +
       '</div>' +
       '<div class="flag-side">' +
-        '<span class="status-pill">' + miniBadge(f.status) + '</span>' +
         shot +
         qrs +
-        (f.repo ? '<div class="card repo" style="border:none;box-shadow:none;padding:0;margin-top:2px">' + ICON_GH + '<span>' + esc(f.repo) + '</span></div>' : '') +
+        (f.repo ? '<div class="flag-repo">' + ICON_GH + '<span>' + esc(f.repo) + '</span></div>' : '') +
       '</div>' +
     '</article>';
   }).join("");
