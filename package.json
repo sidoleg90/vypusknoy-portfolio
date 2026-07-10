@@ -1,0 +1,9 @@
+{
+  "name": "vypusknoy-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build-data": "node -e \"const d=require(./data/projects.json);require(fs).writeFileSync(data/projects.js,/* СГЕНЕРИРОВАНО из projects.json — не редактируй вручную */\\nwindow.PORTFOLIO = +JSON.stringify(d,null,2)+;\\n)\"",
+    "serve": "python3 -m http.server 8123"
+  }
+}
